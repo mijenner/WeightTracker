@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="WeightTracker.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:WeightTracker.Views">
+
+    <Grid
+        Padding="20"
+        ColumnDefinitions="*,*,*"
+        RowDefinitions="*,*,*,*,*,*,*,*,*,*,*">
+        <Label
+            Grid.Column="1"
+            FontSize="Title"
+            Text="Weight Tracker"
+            VerticalOptions="Center" />
+        <Label
+            Grid.Column="2"
+            FontSize="9"
+            HorizontalOptions="End"
+            Text="v3.17 - (c) 2024 Jenner IT"
+            VerticalOptions="Start" />
+        <BoxView
+            Grid.Row="1"
+            Grid.ColumnSpan="10"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            Color="Gray" />
+        <StackLayout
+            Grid.Row="2"
+            Grid.Column="0"
+            HorizontalOptions="Start"
+            Orientation="Vertical"
+            Spacing="10">
+            <Label FontSize="Body" Text="Weight loss 6.3 kg" />
+            <Label FontSize="Body" Text="Weight loss 0.7 kg / week" />
+        </StackLayout>
+        <StackLayout
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalOptions="Start"
+            Orientation="Vertical"
+            Spacing="10">
+            <Label FontSize="Body" Text="Weight loss 23,1%" />
+            <Label FontSize="Body" Text="BMI 29,4" />
+        </StackLayout>
+
+        <Button
+            Grid.Row="2"
+            Grid.Column="2"
+            FontSize="Body"
+            HeightRequest="30"
+            HorizontalOptions="End"
+            Text="Edit profile" />
+        <BoxView
+            Grid.Row="3"
+            Grid.ColumnSpan="10"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            Color="Gray" />
+
+        <Label
+            Grid.Row="4"
+            FontSize="Subtitle"
+            Text="New measurement" />
+
+        <Grid
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            ColumnDefinitions="*"
+            RowDefinitions="*,*"
+            RowSpacing="20">
+            <StackLayout
+                HeightRequest="45"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Label
+                    FontSize="Body"
+                    Text="Weight:"
+                    VerticalTextAlignment="Center" />
+                <Entry
+                    FontSize="Body"
+                    Keyboard="Numeric"
+                    Placeholder="70"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    FontSize="Body"
+                    Text="kg"
+                    VerticalTextAlignment="Center" />
+
+            </StackLayout>
+
+            <StackLayout
+                Grid.Row="1"
+                HeightRequest="45"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Label
+                    FontSize="Body"
+                    Text="Date (dd/mm/YYYYY):"
+                    VerticalTextAlignment="Center" />
+                <Entry
+                    FontSize="Body"
+                    Keyboard="Text"
+                    Placeholder="3/11/1969" />
+
+            </StackLayout>
+
+        </Grid>
+
+        <Button
+            Grid.Row="5"
+            Grid.Column="2"
+            FontSize="Body"
+            HeightRequest="30"
+            HorizontalOptions="End"
+            Text="Add" />
+
+        <BoxView
+            Grid.Row="6"
+            Grid.ColumnSpan="11"
+            HeightRequest="1"
+            HorizontalOptions="FillAndExpand"
+            Color="Gray" />
+
+
+        <Label
+            Grid.Row="7"
+            FontSize="Subtitle"
+            HorizontalOptions="Start"
+            Text="History:" />
+
+        <CollectionView Grid.Row="8" Grid.ColumnSpan="3">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="10">
+                    <Label
+                        FontSize="Body"
+                        HorizontalOptions="Center"
+                        Text="No measurements yet."
+                        TextColor="Gray" />
+                </StackLayout>
+            </CollectionView.EmptyView>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

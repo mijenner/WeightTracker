@@ -1,4 +1,5 @@
-﻿namespace WeightTracker
+﻿
+namespace WeightTracker.Views
 {
     public partial class MainPage : ContentPage
     {
