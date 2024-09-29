@@ -6,12 +6,14 @@
     xmlns:views="clr-namespace:WeightTracker.Views">
 
     <Grid
-        Padding="20"
-        ColumnDefinitions="*,*,*"
-        RowDefinitions="*,*,*,*,*,*,*,*,*,*,*">
+        Padding="20,0"
+        ColumnDefinitions="auto,auto,*"
+        ColumnSpacing="10"
+        RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,*,*,*">
         <Label
-            Grid.Column="1"
+            Grid.ColumnSpan="3"
             FontSize="Title"
+            HorizontalOptions="Center"
             Text="Weight Tracker"
             VerticalOptions="Center" />
         <Label
@@ -23,12 +25,13 @@
         <BoxView
             Grid.Row="1"
             Grid.ColumnSpan="10"
-            HeightRequest="1"
+            HeightRequest="2"
             HorizontalOptions="FillAndExpand"
             Color="Gray" />
         <StackLayout
             Grid.Row="2"
             Grid.Column="0"
+            Margin="0,10,0,10"
             HorizontalOptions="Start"
             Orientation="Vertical"
             Spacing="10">
@@ -38,6 +41,7 @@
         <StackLayout
             Grid.Row="2"
             Grid.Column="1"
+            Margin="0,10,0,10"
             HorizontalOptions="Start"
             Orientation="Vertical"
             Spacing="10">
@@ -48,32 +52,29 @@
         <Button
             Grid.Row="2"
             Grid.Column="2"
+            Margin="0,10,0,10"
             FontSize="Body"
-            HeightRequest="30"
             HorizontalOptions="End"
             Text="Edit profile" />
         <BoxView
             Grid.Row="3"
             Grid.ColumnSpan="10"
-            HeightRequest="1"
-            HorizontalOptions="FillAndExpand"
+            HeightRequest="2"
             Color="Gray" />
 
         <Label
             Grid.Row="4"
+            Grid.ColumnSpan="3"
             FontSize="Subtitle"
-            Text="New measurement" />
+            HorizontalOptions="Start"
+            Text="New measurement"
+            VerticalOptions="Center" />
 
-        <Grid
+        <StackLayout
             Grid.Row="5"
             Grid.ColumnSpan="2"
-            ColumnDefinitions="*"
-            RowDefinitions="*,*"
-            RowSpacing="20">
-            <StackLayout
-                HeightRequest="45"
-                Orientation="Horizontal"
-                Spacing="8">
+            Orientation="Vertical">
+            <StackLayout Orientation="Horizontal" Spacing="8">
                 <Label
                     FontSize="Body"
                     Text="Weight:"
@@ -82,19 +83,15 @@
                     FontSize="Body"
                     Keyboard="Numeric"
                     Placeholder="70"
-                    VerticalTextAlignment="Center" />
+                    VerticalTextAlignment="Center"
+                    WidthRequest="70" />
                 <Label
                     FontSize="Body"
                     Text="kg"
                     VerticalTextAlignment="Center" />
 
             </StackLayout>
-
-            <StackLayout
-                Grid.Row="1"
-                HeightRequest="45"
-                Orientation="Horizontal"
-                Spacing="8">
+            <StackLayout Orientation="Horizontal" Spacing="10">
                 <Label
                     FontSize="Body"
                     Text="Date (dd/mm/YYYYY):"
@@ -106,20 +103,21 @@
 
             </StackLayout>
 
-        </Grid>
+        </StackLayout>
 
         <Button
             Grid.Row="5"
             Grid.Column="2"
+            Margin="0,0,0,10"
             FontSize="Body"
-            HeightRequest="30"
             HorizontalOptions="End"
-            Text="Add" />
+            Text="Add"
+            VerticalOptions="End" />
 
         <BoxView
             Grid.Row="6"
-            Grid.ColumnSpan="11"
-            HeightRequest="1"
+            Grid.ColumnSpan="3"
+            HeightRequest="2"
             HorizontalOptions="FillAndExpand"
             Color="Gray" />
 
