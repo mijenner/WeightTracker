@@ -1,6 +1,4 @@
-﻿
-using System.Diagnostics;
-using WeightTracker.Models;
+﻿using WeightTracker.Models;
 using WeightTracker.Services;
 
 namespace WeightTracker.Views
