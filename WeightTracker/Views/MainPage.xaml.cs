@@ -15,31 +15,33 @@ namespace WeightTracker.Views
         {
             InitializeComponent();
 
-            storageService = new InMemoryStorage();
-            userProfileService = new UserProfileService(); 
+            // storageService = new InMemoryStorage();
+            storageService = new JSONFileStorage();
+            userProfileService = new UserProfileService();
+            storageService.DeleteMeasurementsAsync(); 
 
             TestUserProfileService();
             TestMeasurementStorage(); 
 
         }
 
-        private void TestMeasurementStorage()
+        private async Task TestMeasurementStorage()
         {
             // set breakpoint here 
             var tp1 = DateTime.Now;
             var m1 = new Measurement { TimePoint = tp1, Weight = 70 };
-            storageService.AddMeasurementAsync(m1);
+            await storageService.AddMeasurementAsync(m1);
             var tp2 = DateTime.Now;
             var m2 = new Measurement { TimePoint = tp2, Weight = 80 }; 
-            storageService.AddMeasurementAsync(m2);
+            await storageService.AddMeasurementAsync(m2);
             var tp3 = DateTime.Now;
             var m3 = new Measurement { TimePoint = tp3, Weight = 90 };
-            storageService.AddMeasurementAsync(m3);
-            var list1 = storageService.GetMeasurementsAsync();
+            await storageService.AddMeasurementAsync(m3);
+            var list1 = await storageService.GetMeasurementsAsync();
             m1.Weight = 71;
-            storageService.UpdateMeasurementAsync(m1);
-            storageService.DeleteMeasurementAsync(m2);
-            list1 = storageService.GetMeasurementsAsync();
+            await storageService.UpdateMeasurementAsync(m1);
+            await storageService.DeleteMeasurementAsync(m2);
+            list1 = await storageService.GetMeasurementsAsync();
         }
 
         private void TestUserProfileService()

@@ -37,5 +37,12 @@ namespace WeightTracker.Services
             measurements.TryRemove(measurement.TimePoint, out _);
             return Task.CompletedTask;
         }
+
+        public Task DeleteMeasurementsAsync()
+        {
+            measurements.Clear(); 
+            return Task.CompletedTask;
+        }
+
     }
 }

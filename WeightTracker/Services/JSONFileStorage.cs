@@ -7,9 +7,10 @@ namespace WeightTracker.Services
     {
         private readonly string filePath;
 
-        public JSONFileStorage(string filePath)
+        public JSONFileStorage()
         {
-            this.filePath = filePath;
+            var directory = FileSystem.AppDataDirectory;
+            filePath = Path.Combine(directory, "WeightTrackerMeas.json");
         }
 
         public async Task AddMeasurementAsync(Measurement measurement)
@@ -25,16 +26,27 @@ namespace WeightTracker.Services
                 return new List<Measurement>();
 
             var json = await File.ReadAllTextAsync(filePath);
-            return JsonSerializer.Deserialize<List<Measurement>>(json) ?? new List<Measurement>();
+
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<Measurement>();
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<Measurement>>(json) ?? new List<Measurement>();
+            }
+            catch (JsonException)
+            {
+                return new List<Measurement>();
+            }
         }
 
         public async Task UpdateMeasurementAsync(Measurement measurement)
         {
-            var measurements = await GetMeasurementsAsync();
-            var index = measurements.ToList().FindIndex(m => m.TimePoint == measurement.TimePoint);
+            var measurements = (await GetMeasurementsAsync()).ToList();
+            var index = measurements.FindIndex(m => m.TimePoint == measurement.TimePoint);
             if (index >= 0)
             {
-                measurements.ToList()[index] = measurement; 
+                measurements[index] = measurement; 
                 await SaveMeasurementsAsync(measurements);
             }
         }
@@ -44,6 +56,11 @@ namespace WeightTracker.Services
             var measurements = await GetMeasurementsAsync();
             var updatedMeasurements = measurements.Where(m => m.TimePoint != measurement.TimePoint).ToList();
             await SaveMeasurementsAsync(updatedMeasurements);
+        }
+
+        public async Task DeleteMeasurementsAsync()
+        {
+            await SaveMeasurementsAsync(new List<Measurement>());
         }
 
         private async Task SaveMeasurementsAsync(IEnumerable<Measurement> measurements)
