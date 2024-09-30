@@ -13,8 +13,8 @@ namespace WeightTracker.Views
         {
             InitializeComponent();
 
-            // storageService = new InMemoryStorage();
-            storageService = new JSONFileStorage();
+            storageService = new InMemoryStorage();
+            // storageService = new JSONFileStorage();
             userProfileService = new UserProfileService();
             storageService.DeleteMeasurementsAsync(); 
 
