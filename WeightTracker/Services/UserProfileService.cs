@@ -30,7 +30,7 @@ namespace WeightTracker.Services
 #if WINDOWS || MACOS
             return Environment.UserName;
 #else
-            return "User"; // or prompt the user to enter their name
+            return "User"; 
 #endif
         }
     }

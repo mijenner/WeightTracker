@@ -5,36 +5,36 @@ namespace WeightTracker.Services
 {
     class InMemoryStorage : IStorageService
     {
-        private readonly ConcurrentDictionary<DateTime, Measurement> _measurements;
+        private readonly ConcurrentDictionary<DateTime, Measurement> measurements;
 
         public InMemoryStorage()
         {
-            _measurements = new ConcurrentDictionary<DateTime, Measurement>();
+            measurements = new ConcurrentDictionary<DateTime, Measurement>();
         }
 
         public Task AddMeasurementAsync(Measurement measurement)
         {
-            _measurements[measurement.TimePoint] = measurement; 
+            measurements[measurement.TimePoint] = measurement; 
             return Task.CompletedTask;
         }
 
         public Task<IEnumerable<Measurement>> GetMeasurementsAsync()
         {
-            return Task.FromResult<IEnumerable<Measurement>>(_measurements.Values.ToList());
+            return Task.FromResult<IEnumerable<Measurement>>(measurements.Values.ToList());
         }
 
         public Task UpdateMeasurementAsync(Measurement measurement)
         {
-            if (_measurements.ContainsKey(measurement.TimePoint))
+            if (measurements.ContainsKey(measurement.TimePoint))
             {
-                _measurements[measurement.TimePoint] = measurement;
+                measurements[measurement.TimePoint] = measurement;
             }
             return Task.CompletedTask;
         }
 
         public Task DeleteMeasurementAsync(Measurement measurement)
         {
-            _measurements.TryRemove(measurement.TimePoint, out _);
+            measurements.TryRemove(measurement.TimePoint, out _);
             return Task.CompletedTask;
         }
     }

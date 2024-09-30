@@ -5,11 +5,11 @@ namespace WeightTracker.Services
 {
     class JSONFileStorage : IStorageService
     {
-        private readonly string _filePath;
+        private readonly string filePath;
 
         public JSONFileStorage(string filePath)
         {
-            _filePath = filePath;
+            this.filePath = filePath;
         }
 
         public async Task AddMeasurementAsync(Measurement measurement)
@@ -21,10 +21,10 @@ namespace WeightTracker.Services
 
         public async Task<IEnumerable<Measurement>> GetMeasurementsAsync()
         {
-            if (!File.Exists(_filePath))
+            if (!File.Exists(filePath))
                 return new List<Measurement>();
 
-            var json = await File.ReadAllTextAsync(_filePath);
+            var json = await File.ReadAllTextAsync(filePath);
             return JsonSerializer.Deserialize<List<Measurement>>(json) ?? new List<Measurement>();
         }
 
@@ -49,7 +49,7 @@ namespace WeightTracker.Services
         private async Task SaveMeasurementsAsync(IEnumerable<Measurement> measurements)
         {
             var json = JsonSerializer.Serialize(measurements, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(_filePath, json);
+            await File.WriteAllTextAsync(filePath, json);
         }
     }
 }
