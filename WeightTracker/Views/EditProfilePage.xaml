@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="WeightTracker.Views.EditProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="EditProfilePage">
+
+    <Grid
+        Padding="20,0"
+        ColumnDefinitions="auto,auto,*"
+        ColumnSpacing="10"
+        RowDefinitions="auto,auto,auto,*">
+        <Label
+            Grid.ColumnSpan="3"
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="Weight Tracker"
+            VerticalOptions="Center" />
+        <Label
+            Grid.Column="2"
+            FontSize="9"
+            HorizontalOptions="End"
+            Text="v3.17 - (c) 2024 Jenner IT"
+            VerticalOptions="Start" />
+        <BoxView
+            Grid.Row="1"
+            Grid.ColumnSpan="10"
+            HeightRequest="2"
+            HorizontalOptions="FillAndExpand"
+            Color="Gray" />
+
+        <StackLayout
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
+            Padding="8"
+            Orientation="Vertical"
+            Spacing="10">
+
+            <Label FontSize="Subtitle" Text="User Profile" />
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Label
+                    FontSize="Body"
+                    Text="Username:"
+                    VerticalTextAlignment="Center" />
+                <Entry Placeholder="John Doe" VerticalTextAlignment="Center" />
+
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Label
+                    FontSize="Body"
+                    Text="Height: 179,2 cm"
+                    VerticalTextAlignment="Center" />
+                <Entry
+                    FontSize="Body"
+                    Placeholder="179,2"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    FontSize="Body"
+                    Text="cm"
+                    VerticalTextAlignment="Center" />
+
+
+            </StackLayout>
+            <Label FontSize="Body" Text="Reference measurement" />
+
+            <StackLayout
+                Margin="20,0,0,0"
+                Orientation="Horizontal"
+                Spacing="10">
+                <Label
+                    FontSize="Body"
+                    Text="Weight"
+                    VerticalTextAlignment="Center" />
+                <Entry
+                    FontSize="Body"
+                    Placeholder="94,1"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    FontSize="Body"
+                    Text="kg"
+                    VerticalTextAlignment="Center" />
+
+            </StackLayout>
+
+            <StackLayout
+                Margin="20,0,0,0"
+                Orientation="Horizontal"
+                Spacing="10">
+
+                <Label
+                    FontSize="Body"
+                    Text="Date measured"
+                    VerticalTextAlignment="Center" />
+                <Entry
+                    FontSize="Body"
+                    Placeholder="25/07/2024"
+                    VerticalTextAlignment="Center" />
+            </StackLayout>
+
+            <Grid
+                Margin="20,0,20,0"
+                ColumnDefinitions="*,*"
+                RowDefinitions="auto">
+                <Button
+                    FontSize="Body"
+                    HeightRequest="20"
+                    HorizontalOptions="End"
+                    Text="Save" />
+                <Button
+                    Grid.Column="1"
+                    FontSize="Body"
+                    HorizontalOptions="End"
+                    Text="Cancel" />
+
+            </Grid>
+        </StackLayout>
+    </Grid>
+
+</ContentPage>
