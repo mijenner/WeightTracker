@@ -2,7 +2,7 @@
 
 namespace WeightTracker.ViewModels
 {
-    internal partial class BaseViewModel : ObservableObject  
+    public partial class BaseViewModel : ObservableObject  
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBusy))]
