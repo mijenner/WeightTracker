@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Models
 {
-    class Measurement
+    public class Measurement
     {
         public DateTime TimePoint { get; set; } = DateTime.MinValue;
         public double Weight { get; set; } = 0.0;

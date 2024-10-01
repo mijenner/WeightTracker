@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using WeightTracker.Services;
+using WeightTracker.ViewModels;
+using WeightTracker.Views;
 
 namespace WeightTracker
 {
@@ -14,6 +18,15 @@ namespace WeightTracker
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<IStorageService, InMemoryStorage>();
+            builder.Services.AddSingleton<IUserProfileService, UserProfileService>();
+
+            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<EditProfileViewModel>(); 
+
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddTransient<EditProfilePage>(); 
 
 #if DEBUG
     		builder.Logging.AddDebug();

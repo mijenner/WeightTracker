@@ -3,7 +3,7 @@ using WeightTracker.Models;
 
 namespace WeightTracker.Services
 {
-    interface IStorageService
+    public interface IStorageService
     {
         // CRUD 
         Task AddMeasurementAsync(Measurement measurement);  // Create 
