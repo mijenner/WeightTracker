@@ -9,6 +9,6 @@ namespace WeightTracker.ViewModels
         bool isBusy;
         [ObservableProperty]
         string title;
-        public bool IsNotBusy => !isBusy;
+        public bool IsNotBusy => !IsBusy;
     }
 }
