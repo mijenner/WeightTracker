@@ -5,6 +5,7 @@ namespace WeightTracker.Services
 {
     interface IStorageService
     {
+        // CRUD 
         Task AddMeasurementAsync(Measurement measurement);  // Create 
         Task<IEnumerable<Measurement>> GetMeasurementsAsync(); // Read
         Task UpdateMeasurementAsync(Measurement measurement); // Update
