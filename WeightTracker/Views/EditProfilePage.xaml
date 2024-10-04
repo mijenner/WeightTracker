@@ -3,7 +3,9 @@
     x:Class="WeightTracker.Views.EditProfilePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="EditProfilePage">
+    xmlns:models="clr-namespace:WeightTracker.Models"
+    xmlns:viewmodels="clr-namespace:WeightTracker.ViewModels"
+    x:DataType="viewmodels:UserProfileViewModel">
 
     <Grid
         Padding="20,0"
@@ -42,24 +44,26 @@
                     FontSize="Body"
                     Text="Username:"
                     VerticalTextAlignment="Center" />
-                <Entry Placeholder="John Doe" VerticalTextAlignment="Center" />
+                <Entry
+                    Text="{Binding UserProfile.Name}"
+                    VerticalTextAlignment="Center"
+                    WidthRequest="150" />
 
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" Spacing="10">
                 <Label
                     FontSize="Body"
-                    Text="Height: 179,2 cm"
+                    Text="Height:"
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Placeholder="179,2"
+                    Text="{Binding UserProfile.Height}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
                     Text="cm"
                     VerticalTextAlignment="Center" />
-
 
             </StackLayout>
             <Label FontSize="Body" Text="Reference measurement" />
@@ -70,11 +74,11 @@
                 Spacing="10">
                 <Label
                     FontSize="Body"
-                    Text="Weight"
+                    Text="Weight:"
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Placeholder="94,1"
+                    Text="{Binding UserProfile.RefWeight}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
@@ -83,20 +87,18 @@
 
             </StackLayout>
 
-            <StackLayout
-                Margin="20,0,0,0"
-                Orientation="Horizontal"
-                Spacing="10">
-
+            <Grid
+                ColumnDefinitions="auto,auto,auto"
+                ColumnSpacing="7"
+                RowDefinitions="auto">
                 <Label
                     FontSize="Body"
                     Text="Date measured"
                     VerticalTextAlignment="Center" />
-                <Entry
-                    FontSize="Body"
-                    Placeholder="25/07/2024"
-                    VerticalTextAlignment="Center" />
-            </StackLayout>
+                <DatePicker Grid.Column="1" Date="{Binding SelectedDate}" />
+                <TimePicker Grid.Column="2" Time="{Binding SelectedTime}" />
+
+            </Grid>
 
             <Grid
                 Margin="20,0,20,0"
@@ -105,7 +107,7 @@
                 <Button
                     FontSize="Body"
                     HeightRequest="20"
-                    HorizontalOptions="End"
+                    HorizontalOptions="Start"
                     Text="Save" />
                 <Button
                     Grid.Column="1"

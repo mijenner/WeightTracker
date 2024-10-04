@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using WeightTracker.Models;
 using WeightTracker.Services;
 
@@ -11,6 +10,7 @@ namespace WeightTracker.ViewModels
 
         [ObservableProperty]
         private UserProfile userProfile;
+
         [ObservableProperty]
         private double weightLoss = 0;
         [ObservableProperty]
@@ -18,7 +18,13 @@ namespace WeightTracker.ViewModels
         [ObservableProperty]
         private double weightLossPercent = 0;
         [ObservableProperty]
-        private double bmi = 0; 
+        private double bmi = 0;
+
+        [ObservableProperty]
+        private DateTime selectedDate;
+
+        [ObservableProperty]
+        private TimeSpan selectedTime;
 
         [ObservableProperty]
         private MeasurementsViewModel measurementsViewModel;
@@ -31,8 +37,22 @@ namespace WeightTracker.ViewModels
             UpdateData();
         }
 
+
+        partial void OnSelectedDateChanged(DateTime value)
+        {
+            UserProfile.RefDate = value.Add(SelectedTime);
+        }
+
+        partial void OnSelectedTimeChanged(TimeSpan value)
+        {
+            UserProfile.RefDate = SelectedDate.Add(value);
+        }
+
         public void UpdateData()
         {
+            SelectedDate = UserProfile.RefDate.Date;
+            SelectedTime = UserProfile.RefDate.TimeOfDay;
+
             var latest = MeasurementsViewModel.GetLatestMeasurement();
             if (latest.Weight > 0)
             {
@@ -40,9 +60,16 @@ namespace WeightTracker.ViewModels
                 UserProfile.WeightDate = latest.TimePoint; 
             }
             WeightLoss = UserProfile.Weight - UserProfile.RefWeight;
-            WeightLossPercent = WeightLoss / UserProfile.RefWeight;
-            WeightLossRate = WeightLoss / (UserProfile.WeightDate - UserProfile.RefDate).Days / 7;
-            Bmi = UserProfile.Weight / (Math.Pow(UserProfile.Height, 2)); 
+
+            WeightLossPercent = UserProfile.RefWeight > 0 ? WeightLoss / UserProfile.RefWeight : 0;
+
+            var daysBetween = (UserProfile.WeightDate - UserProfile.RefDate).Days;
+            WeightLossRate = daysBetween > 0 ? WeightLoss / (daysBetween / 7) : 0;
+
+            if (UserProfile.Height > 0)
+            {
+                Bmi = UserProfile.Height > 0 ? UserProfile.Weight / Math.Pow(UserProfile.Height, 2) : 0;
+            }
         }
     }
 }
