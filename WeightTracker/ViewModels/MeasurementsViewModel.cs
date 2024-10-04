@@ -7,7 +7,7 @@ using WeightTracker.Services;
 
 namespace WeightTracker.ViewModels
 {
-    public partial class MainViewModel : BaseViewModel
+    public partial class MeasurementsViewModel : BaseViewModel
     {
         private IStorageService storageService;
         public ObservableCollection<Measurement> Measurements { get; set; } = new();
@@ -21,11 +21,12 @@ namespace WeightTracker.ViewModels
         [ObservableProperty]
         private TimeSpan selectedTime;
 
-        public MainViewModel(IStorageService storageService)
+        // constructor 
+        public MeasurementsViewModel(IStorageService storageService)
         {
             Title = "Weight Tracker";
             this.storageService = storageService;
-            SetDateAndTime(); 
+            SetDateAndTime();
         }
 
         private void SetDateAndTime() {
@@ -61,9 +62,9 @@ namespace WeightTracker.ViewModels
             {
                 var meas = await storageService.GetMeasurementsAsync();
                 Measurements.Clear();
-                foreach (var measurement in meas)
+                foreach (var measurement in meas.OrderByDescending(m => m.TimePoint))
                 {
-                    Measurements.Add(measurement); 
+                    Measurements.Add(measurement);
                 }
 
             }
@@ -75,6 +76,16 @@ namespace WeightTracker.ViewModels
 
             }
 
+        }
+
+        public Measurement GetLatestMeasurement()
+        {
+            if (Measurements.Count == 0)
+                return new Measurement();
+
+            var recentMeasurement = Measurements.OrderByDescending(m => m.TimePoint).FirstOrDefault();
+
+            return recentMeasurement ?? new Measurement();
         }
     }
 }

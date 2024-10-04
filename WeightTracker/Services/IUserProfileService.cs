@@ -7,7 +7,7 @@ using WeightTracker.Models;
 
 namespace WeightTracker.Services
 {
-    interface IUserProfileService
+    public interface IUserProfileService
     {
         void SaveUserProfile(UserProfile userProfile);
         UserProfile GetUserProfile();

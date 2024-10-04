@@ -4,185 +4,202 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:WeightTracker.Models"
+    xmlns:view="clr-namespace:WeightTracker.Views"
     xmlns:viewmodel="clr-namespace:WeightTracker.ViewModels"
-    xmlns:views="clr-namespace:WeightTracker.Views"
-    x:DataType="viewmodel:MainViewModel">
+    x:DataType="viewmodel:UserProfileViewModel">
 
-    <Grid
-        Padding="20,0"
-        ColumnDefinitions="auto,auto,*"
-        ColumnSpacing="10"
-        RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,*">
-        <Label
-            Grid.ColumnSpan="3"
-            FontSize="Title"
-            HorizontalOptions="Center"
-            Text="Weight Tracker"
-            VerticalOptions="Center" />
-        <Label
-            Grid.Column="2"
-            FontSize="9"
-            HorizontalOptions="End"
-            Text="v3.17 - (c) 2024 Jenner IT"
-            VerticalOptions="Start" />
-        <BoxView
-            Grid.Row="1"
-            Grid.ColumnSpan="10"
-            HeightRequest="2"
-            HorizontalOptions="FillAndExpand"
-            Color="Gray" />
-        <StackLayout
-            Grid.Row="2"
-            Grid.Column="0"
-            Margin="0,10,0,10"
-            HorizontalOptions="Start"
-            Orientation="Vertical"
-            Spacing="10">
-            <Label FontSize="Body" Text="Weight loss 6.3 kg" />
-            <Label FontSize="Body" Text="Weight loss 0.7 kg / week" />
-        </StackLayout>
-        <StackLayout
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="0,10,0,10"
-            HorizontalOptions="Start"
-            Orientation="Vertical"
-            Spacing="10">
-            <Label FontSize="Body" Text="Weight loss 23,1%" />
-            <Label FontSize="Body" Text="BMI 29,4" />
-        </StackLayout>
+    <StackLayout Orientation="Vertical">
+        <Grid
+            Padding="20,0"
+            ColumnDefinitions="auto,auto,*"
+            ColumnSpacing="10"
+            RowDefinitions="auto,auto,auto">
+            <Label
+                Grid.ColumnSpan="3"
+                FontSize="Title"
+                HorizontalOptions="Center"
+                Text="Weight Tracker"
+                VerticalOptions="Center" />
+            <Label
+                Grid.Column="2"
+                FontSize="9"
+                HorizontalOptions="End"
+                Text="v3.17 - (c) 2024 Jenner IT"
+                VerticalOptions="Start" />
 
-        <Button
-            Grid.Row="2"
-            Grid.Column="2"
-            Margin="0,10,0,10"
-            FontSize="Body"
-            HorizontalOptions="End"
-            Text="Edit profile" />
-        <BoxView
-            Grid.Row="3"
-            Grid.ColumnSpan="10"
-            HeightRequest="2"
-            Color="Gray" />
-
-        <Label
-            Grid.Row="4"
-            Grid.ColumnSpan="3"
-            Margin="0,10,0,0"
-            FontSize="Subtitle"
-            HorizontalOptions="Start"
-            Text="New measurement"
-            VerticalOptions="Center" />
-
-        <StackLayout
-            Grid.Row="5"
-            Grid.ColumnSpan="2"
-            Orientation="Vertical"
-            Spacing="10">
-
-            <StackLayout Orientation="Horizontal" Spacing="8">
-                <Label
-                    FontSize="Body"
-                    Text="Weight:"
-                    VerticalTextAlignment="Center" />
-                <Entry
-                    FontSize="Body"
-                    Keyboard="Numeric"
-                    Placeholder="70"
-                    VerticalTextAlignment="Center"
-                    WidthRequest="50" />
-                <Label
-                    FontSize="Body"
-                    Text="kg"
-                    VerticalTextAlignment="Center" />
-
+            <BoxView
+                Grid.Row="1"
+                Grid.ColumnSpan="10"
+                HeightRequest="2"
+                HorizontalOptions="FillAndExpand"
+                Color="Gray" />
+            <StackLayout
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="0,10,0,10"
+                HorizontalOptions="Start"
+                Orientation="Vertical"
+                Spacing="10">
+                <Label FontSize="Body" Text="{Binding UserProfile.Weight, StringFormat='Weight loss {0:F1} kg'}" />
+                <Label FontSize="Body" Text="{Binding WeightLossRate, StringFormat='Lost {0:F2} kg / week'}" />
             </StackLayout>
-            <Grid
-                ColumnDefinitions="auto,auto,auto"
-                ColumnSpacing="7"
-                RowDefinitions="auto">
-                <Label
-                    FontSize="Body"
-                    Text="Date and time: "
-                    VerticalTextAlignment="Center" />
-                <DatePicker
-                    Grid.Column="1"
-                    Date="{Binding SelectedDate, Mode=TwoWay}"
-                    VerticalOptions="Fill" />
-                <TimePicker
-                    Grid.Column="2"
-                    Margin="0,10,0,0"
-                    Format="HH:mm"
-                    Time="{Binding SelectedTime, Mode=TwoWay}"
-                    VerticalOptions="FillAndExpand" />
+            <StackLayout
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,10,0,10"
+                HorizontalOptions="Start"
+                Orientation="Vertical"
+                Spacing="10">
+                <Label FontSize="Body" Text="{Binding WeightLossPercent, StringFormat='Weight loss {0:P0}'}" />
+                <Label FontSize="Body" Text="{Binding Bmi, StringFormat='BMI {0:F1}'}" />
+            </StackLayout>
 
-            </Grid>
+            <Button
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="0,10,0,10"
+                FontSize="Body"
+                HorizontalOptions="End"
+                Text="Edit profile" />
 
-        </StackLayout>
+        </Grid>
 
-        <Button
-            Grid.Row="5"
-            Grid.Column="2"
-            Margin="0,0,0,10"
-            Command="{Binding AddNewMeasurementCommand}"
-            FontSize="Body"
-            HorizontalOptions="End"
-            Text="Add"
-            VerticalOptions="End" />
+        <Grid
+            Padding="20,0"
+            ColumnDefinitions="auto,auto,*"
+            ColumnSpacing="10"
+            RowDefinitions="auto,auto,auto">
+            <BoxView
+                Grid.ColumnSpan="10"
+                HeightRequest="2"
+                Color="Gray" />
 
-        <BoxView
-            Grid.Row="6"
-            Grid.ColumnSpan="3"
-            HeightRequest="2"
-            HorizontalOptions="FillAndExpand"
-            Color="Gray" />
+            <Label
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0,10,0,0"
+                FontSize="Subtitle"
+                HorizontalOptions="Start"
+                Text="New measurement"
+                VerticalOptions="Center" />
 
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,10,0,10"
+                Command="{Binding MeasurementsViewModel.AddNewMeasurementCommand}"
+                FontSize="Body"
+                HorizontalOptions="End"
+                Text="Add"
+                VerticalOptions="End" />
 
-        <Label
-            Grid.Row="7"
-            FontSize="Subtitle"
-            HorizontalOptions="Start"
-            Text="History:" />
+            <StackLayout
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Orientation="Vertical"
+                Spacing="10">
 
-        <Button
-            Grid.Row="7"
-            Grid.Column="2"
-            Margin="0,10,0,0"
-            Command="{Binding FetchMeasurementsCommand}"
-            FontSize="Body"
-            HorizontalOptions="End"
-            Text="Fetch"
-            VerticalOptions="Center" />
-
-        <CollectionView
-            Grid.Row="8"
-            Grid.ColumnSpan="3"
-            Margin="0,10,0,10"
-            ItemsSource="{Binding Measurements}">
-
-            <CollectionView.EmptyView>
-                <StackLayout Padding="10">
+                <StackLayout Orientation="Horizontal" Spacing="8">
                     <Label
                         FontSize="Body"
-                        HorizontalOptions="Center"
-                        Text="No measurements yet."
-                        TextColor="Gray" />
+                        Text="Weight:"
+                        VerticalTextAlignment="Center" />
+                    <Entry
+                        FontSize="Body"
+                        Keyboard="Numeric"
+                        Text="{Binding MeasurementsViewModel.NewWeight}"
+                        VerticalTextAlignment="Center"
+                        WidthRequest="50" />
+                    <Label
+                        FontSize="Body"
+                        Text="kg"
+                        VerticalTextAlignment="Center" />
+
                 </StackLayout>
-            </CollectionView.EmptyView>
+                <Grid
+                    ColumnDefinitions="auto,auto,auto"
+                    ColumnSpacing="7"
+                    RowDefinitions="auto">
+                    <Label
+                        FontSize="Body"
+                        Text="Date and time: "
+                        VerticalTextAlignment="Center" />
+                    <DatePicker
+                        Grid.Column="1"
+                        Date="{Binding MeasurementsViewModel.SelectedDate, Mode=TwoWay}"
+                        VerticalOptions="Fill" />
+                    <TimePicker
+                        Grid.Column="2"
+                        Margin="0,10,0,0"
+                        Format="HH:mm"
+                        Time="{Binding MeasurementsViewModel.SelectedTime, Mode=TwoWay}"
+                        VerticalOptions="FillAndExpand" />
+                </Grid>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Measurement">
-                    <Frame>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding TimePoint, StringFormat='Time point: {0:MM/dd/yyyy HH:mm}'}" />
-                            <Label Text="{Binding Weight, StringFormat=' --- Mass: {0} kg'}" />
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+            </StackLayout>
 
-        </CollectionView>
+        </Grid>
 
-    </Grid>
+        <Grid
+            Padding="20,0"
+            ColumnDefinitions="auto,auto,*"
+            ColumnSpacing="10"
+            RowDefinitions="auto,auto,300">
+
+            <BoxView
+                Grid.ColumnSpan="3"
+                HeightRequest="2"
+                HorizontalOptions="FillAndExpand"
+                Color="Gray" />
+
+
+            <Label
+                Grid.Row="1"
+                FontSize="Subtitle"
+                HorizontalOptions="Start"
+                Text="History:" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,10,0,0"
+                Command="{Binding MeasurementsViewModel.FetchMeasurementsCommand}"
+                FontSize="Body"
+                HorizontalOptions="End"
+                Text="Fetch"
+                VerticalOptions="Center" />
+
+            <CollectionView
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Margin="0,10,0,10"
+                ItemsSource="{Binding MeasurementsViewModel.Measurements}">
+
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="10">
+                        <Label
+                            FontSize="Body"
+                            HorizontalOptions="Center"
+                            Text="No measurements yet."
+                            TextColor="Gray" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Measurement">
+                        <Frame>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding TimePoint, StringFormat='Time point: {0:MM/dd/yyyy HH:mm}'}" />
+                                <Label Text="{Binding Weight, StringFormat=' --- Mass: {0} kg'}" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </Grid>
+
+    </StackLayout>
 
 </ContentPage>

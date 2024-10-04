@@ -22,7 +22,8 @@ namespace WeightTracker
             builder.Services.AddSingleton<IStorageService, InMemoryStorage>();
             builder.Services.AddSingleton<IUserProfileService, UserProfileService>();
 
-            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<MeasurementsViewModel>();
+            builder.Services.AddSingleton<UserProfileViewModel>();
             builder.Services.AddSingleton<EditProfileViewModel>(); 
 
             builder.Services.AddSingleton<MainPage>();
