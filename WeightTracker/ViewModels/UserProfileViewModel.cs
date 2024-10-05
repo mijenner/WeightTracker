@@ -1,15 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using WeightTracker.Models;
 using WeightTracker.Services;
 
 namespace WeightTracker.ViewModels
 {
-    public partial class UserProfileViewModel : ObservableObject 
+    public partial class UserProfileViewModel : ObservableObject
     {
         private IUserProfileService userProfileService;
 
         [ObservableProperty]
         private UserProfile userProfile;
+
+        [ObservableProperty]
+        private UserProfile tempUserProfile;
 
         [ObservableProperty]
         private double weightLoss = 0;
@@ -27,16 +31,34 @@ namespace WeightTracker.ViewModels
         private TimeSpan selectedTime;
 
         [ObservableProperty]
+        private bool isSavedMessageVisible = false; 
+
+        [ObservableProperty]
         private MeasurementsViewModel measurementsViewModel;
 
         public UserProfileViewModel(IUserProfileService userProfileService, MeasurementsViewModel measurementsViewModel)
         {
-            this.userProfileService = userProfileService; 
+            this.userProfileService = userProfileService;
             UserProfile = this.userProfileService.GetUserProfile();
-            this.measurementsViewModel = measurementsViewModel;
-            UpdateData();
+            LoadTempProfile();
+            MeasurementsViewModel = measurementsViewModel;
         }
 
+        public void LoadTempProfile()
+        {
+            TempUserProfile = new UserProfile
+            {
+                Name = UserProfile.Name,
+                Height = UserProfile.Height,
+                Weight = UserProfile.Weight,
+                WeightDate = UserProfile.WeightDate,
+                RefWeight = UserProfile.RefWeight,
+                RefDate = UserProfile.RefDate,
+            };
+
+            SelectedDate = TempUserProfile.RefDate.Date;
+            SelectedTime = TempUserProfile.RefDate.TimeOfDay;
+        }
 
         partial void OnSelectedDateChanged(DateTime value)
         {
@@ -53,11 +75,13 @@ namespace WeightTracker.ViewModels
             SelectedDate = UserProfile.RefDate.Date;
             SelectedTime = UserProfile.RefDate.TimeOfDay;
 
+            if (MeasurementsViewModel is null) return; 
+
             var latest = MeasurementsViewModel.GetLatestMeasurement();
             if (latest.Weight > 0)
             {
                 UserProfile.Weight = latest.Weight;
-                UserProfile.WeightDate = latest.TimePoint; 
+                UserProfile.WeightDate = latest.TimePoint;
             }
             WeightLoss = UserProfile.Weight - UserProfile.RefWeight;
 
@@ -70,6 +94,31 @@ namespace WeightTracker.ViewModels
             {
                 Bmi = UserProfile.Height > 0 ? UserProfile.Weight / Math.Pow(UserProfile.Height, 2) : 0;
             }
+        }
+
+        partial void OnUserProfileChanged(UserProfile value)
+        {
+            UpdateData();
+        }
+
+        [RelayCommand]
+        public async Task SaveUserProfile()
+        {
+            if (UserProfile == null) return;
+            if (UserProfile.Weight == 0 || UserProfile.Height == 0) return;
+
+            UserProfile.Name = TempUserProfile.Name;
+            UserProfile.Weight = TempUserProfile.Weight;
+            UserProfile.Height = TempUserProfile.Height;
+            UserProfile.WeightDate = TempUserProfile.WeightDate;
+            UserProfile.RefWeight = TempUserProfile.RefWeight;
+            UserProfile.RefDate = TempUserProfile.RefDate;
+
+            userProfileService.SaveUserProfile(UserProfile);
+
+            isSavedMessageVisible = true;
+            await Task.Delay(2000);
+            IsSavedMessageVisible = false;
         }
     }
 }

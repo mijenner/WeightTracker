@@ -24,7 +24,6 @@ namespace WeightTracker
 
             builder.Services.AddSingleton<MeasurementsViewModel>();
             builder.Services.AddSingleton<UserProfileViewModel>();
-            builder.Services.AddSingleton<EditProfileViewModel>(); 
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddTransient<EditProfilePage>(); 

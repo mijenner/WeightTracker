@@ -9,31 +9,31 @@
 
     <Grid
         Padding="20,0"
-        ColumnDefinitions="auto,auto,*"
+        ColumnDefinitions="auto,auto,auto,*"
         ColumnSpacing="10"
-        RowDefinitions="auto,auto,auto,*">
+        RowDefinitions="auto,auto,auto,auto,*">
         <Label
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="4"
             FontSize="Title"
             HorizontalOptions="Center"
             Text="Weight Tracker"
             VerticalOptions="Center" />
         <Label
-            Grid.Column="2"
+            Grid.Column="3"
             FontSize="9"
             HorizontalOptions="End"
             Text="v3.17 - (c) 2024 Jenner IT"
             VerticalOptions="Start" />
         <BoxView
             Grid.Row="1"
-            Grid.ColumnSpan="10"
+            Grid.ColumnSpan="4"
             HeightRequest="2"
             HorizontalOptions="FillAndExpand"
             Color="Gray" />
 
         <StackLayout
-            Grid.Row="3"
-            Grid.ColumnSpan="3"
+            Grid.Row="2"
+            Grid.ColumnSpan="4"
             Padding="8"
             Orientation="Vertical"
             Spacing="10">
@@ -45,7 +45,7 @@
                     Text="Username:"
                     VerticalTextAlignment="Center" />
                 <Entry
-                    Text="{Binding UserProfile.Name}"
+                    Text="{Binding TempUserProfile.Name, Mode=TwoWay}"
                     VerticalTextAlignment="Center"
                     WidthRequest="150" />
 
@@ -58,7 +58,7 @@
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Text="{Binding UserProfile.Height}"
+                    Text="{Binding TempUserProfile.Height, Mode=TwoWay}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
@@ -66,6 +66,12 @@
                     VerticalTextAlignment="Center" />
 
             </StackLayout>
+
+            <BoxView
+                HeightRequest="1"
+                HorizontalOptions="FillAndExpand"
+                Color="Gray" />
+
             <Label FontSize="Body" Text="Reference measurement" />
 
             <StackLayout
@@ -78,7 +84,7 @@
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Text="{Binding UserProfile.RefWeight}"
+                    Text="{Binding TempUserProfile.RefWeight, Mode=TwoWay}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
@@ -87,26 +93,33 @@
 
             </StackLayout>
 
+            <Label Margin="20,0,0,0" Text="Date measured:" />
+
             <Grid
                 ColumnDefinitions="auto,auto,auto"
                 ColumnSpacing="7"
                 RowDefinitions="auto">
-                <Label
+                <DatePicker
+                    Grid.Column="1"
+                    Date="{Binding SelectedDate, Mode=TwoWay}"
                     FontSize="Body"
-                    Text="Date measured"
-                    VerticalTextAlignment="Center" />
-                <DatePicker Grid.Column="1" Date="{Binding SelectedDate}" />
-                <TimePicker Grid.Column="2" Time="{Binding SelectedTime}" />
-
+                    VerticalOptions="Fill" />
+                <TimePicker
+                    Grid.Column="2"
+                    Margin="0,12,0,0"
+                    FontSize="Body"
+                    Format="HH:mm"
+                    Time="{Binding SelectedTime, Mode=TwoWay}"
+                    VerticalOptions="FillAndExpand" />
             </Grid>
 
             <Grid
-                Margin="20,0,20,0"
+                Margin="20,0,0,0"
                 ColumnDefinitions="*,*"
                 RowDefinitions="auto">
                 <Button
+                    Command="{Binding SaveUserProfileCommand}"
                     FontSize="Body"
-                    HeightRequest="20"
                     HorizontalOptions="Start"
                     Text="Save" />
                 <Button
@@ -114,9 +127,16 @@
                     FontSize="Body"
                     HorizontalOptions="End"
                     Text="Cancel" />
-
             </Grid>
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="Body"
+                IsVisible="{Binding IsSavedMessageVisible}"
+                Text="User profile saved!" />
+
         </StackLayout>
+
     </Grid>
 
 </ContentPage>
