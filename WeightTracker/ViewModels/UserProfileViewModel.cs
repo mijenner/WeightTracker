@@ -90,12 +90,9 @@ namespace WeightTracker.ViewModels
         public void CalculateDerivedData()
         {
             WeightLoss = RefWeight - Weight;
-
             WeightLossPercent = RefWeight > 0 ? WeightLoss / RefWeight : 0;
-
             var weeksBetween = (WeightDate - RefDate).Days / 7.0;
             WeightLossRate = Math.Abs(weeksBetween) > 0 ? WeightLoss / weeksBetween : 0;
-
             Bmi = Height > 0 ? Weight / Math.Pow(Height / 100.0, 2) : 0;
         }
 
@@ -128,16 +125,16 @@ namespace WeightTracker.ViewModels
             IsSavedMessageVisible = true;
             await Task.Delay(2000);
             IsSavedMessageVisible = false;
+            await GoBack(); 
         }
 
-        [RelayCommand]
         public async Task SaveUserProfile()  // for main page 
         {
             UpdateUsersWeight();
             userProfileService.SaveUserProfile(tempUserProfile);
 
             IsSavedMessageVisible = true;
-            await Task.Delay(2000);
+            await Task.Delay(1000);
             IsSavedMessageVisible = false;
         }
 
@@ -154,12 +151,16 @@ namespace WeightTracker.ViewModels
             await SaveUserProfile();
         }
 
-
-
         [RelayCommand]
         public async Task GotoEditProfilePageAsync()
         {
             await Shell.Current.GoToAsync("editprofile");
+        }
+
+        [RelayCommand]
+        public async Task GoBack() // for edit profile page 
+        {
+            await Shell.Current.GoToAsync(".."); 
         }
     }
 }

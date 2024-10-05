@@ -126,6 +126,7 @@
                     Text="Save" />
                 <Button
                     Grid.Column="1"
+                    Command="{Binding GoBackCommand}"
                     FontSize="Body"
                     HorizontalOptions="End"
                     Text="Cancel" />
