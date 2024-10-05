@@ -37,6 +37,7 @@ namespace WeightTracker.ViewModels
         [RelayCommand]
         async Task AddNewMeasurementAsync()
         {
+            if (NewWeight == 0) return; 
             try
             {
                 var timePoint = SelectedDate.Date + SelectedTime;
