@@ -89,6 +89,16 @@ namespace WeightTracker.ViewModels
 
         public void CalculateDerivedData()
         {
+            if (MeasurementsViewModel.Measurements.Count == 0)
+            {
+                Weight = 0;
+                WeightLoss = 0;
+                WeightLossPercent = 0;
+                WeightLossRate = 0;
+                Bmi = 0;
+                return; 
+            }
+
             WeightLoss = RefWeight - Weight;
             WeightLossPercent = RefWeight > 0 ? WeightLoss / RefWeight : 0;
             var weeksBetween = (WeightDate - RefDate).Days / 7.0;
@@ -125,10 +135,10 @@ namespace WeightTracker.ViewModels
             IsSavedMessageVisible = true;
             await Task.Delay(2000);
             IsSavedMessageVisible = false;
-            await GoBack(); 
+            await GoBackAsync(); 
         }
 
-        public async Task SaveUserProfile()  // for main page 
+        public async Task SaveUserProfileAsync()  // for main page 
         {
             UpdateUsersWeight();
             userProfileService.SaveUserProfile(tempUserProfile);
@@ -139,16 +149,27 @@ namespace WeightTracker.ViewModels
         }
 
         [RelayCommand]
-        public async Task AddNewMeasurement() // for main page 
+        public async Task AddNewMeasurementAsync() // for main page 
         {
             if (NewWeight <= 0) return;
             await MeasurementsViewModel.AddNewMeasurementAsync(NewWeight, SelectedDate.Add(SelectedTime));
 
-            var newMeasurement = MeasurementsViewModel.GetLatestMeasurement();
-            if (newMeasurement.Weight == 0) return;
+            UpdateUsersWeight();
+            CalculateDerivedData();
+            await SaveUserProfileAsync();
+        }
+
+        [RelayCommand]
+        public async Task DeleteMeasurementAsync(Measurement measurement) // for main page 
+        {
+            if (measurement is null) return; 
+            if (measurement.Weight == 0) return;
+
+            await MeasurementsViewModel.DeleteMeasurementAsync(measurement); 
 
             UpdateUsersWeight();
-            await SaveUserProfile();
+            CalculateDerivedData();
+            await SaveUserProfileAsync();
         }
 
         [RelayCommand]
@@ -158,7 +179,7 @@ namespace WeightTracker.ViewModels
         }
 
         [RelayCommand]
-        public async Task GoBack() // for edit profile page 
+        public async Task GoBackAsync() // for edit profile page 
         {
             await Shell.Current.GoToAsync(".."); 
         }

@@ -72,5 +72,11 @@ namespace WeightTracker.ViewModels
 
             return recentMeasurement ?? new Measurement();
         }
+
+        public async Task DeleteMeasurementAsync(Measurement measurement)
+        {
+            Measurements.Remove(measurement);
+            await storageService.DeleteMeasurementAsync(measurement);
+        }
     }
 }

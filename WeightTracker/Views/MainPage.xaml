@@ -10,7 +10,7 @@
 
     <StackLayout Orientation="Vertical">
         <Grid
-            Padding="20,0"
+            Padding="20,0,20,0"
             ColumnDefinitions="auto,auto,*"
             ColumnSpacing="10"
             RowDefinitions="auto,auto,auto">
@@ -76,7 +76,7 @@
         </Grid>
 
         <Grid
-            Padding="20,0"
+            Padding="20,0,20,0"
             ColumnDefinitions="auto,auto,*"
             ColumnSpacing="10"
             RowDefinitions="auto,auto,auto">
@@ -154,9 +154,8 @@
         </Grid>
 
         <Grid
-            Padding="20,0"
-            ColumnDefinitions="auto,auto,*"
-            ColumnSpacing="10"
+            Padding="20,0,20,0"
+            ColumnDefinitions="*,*,*"
             RowDefinitions="auto,auto,300">
 
             <BoxView
@@ -165,31 +164,19 @@
                 HorizontalOptions="FillAndExpand"
                 Color="Gray" />
 
-
             <Label
                 Grid.Row="1"
                 FontSize="Subtitle"
                 HorizontalOptions="Start"
                 Text="History:" />
 
-            <Button
-                Grid.Row="1"
-                Grid.Column="2"
-                Margin="0,10,0,0"
-                Command="{Binding MeasurementsViewModel.FetchMeasurementsCommand}"
-                FontSize="Body"
-                HorizontalOptions="End"
-                Text="Fetch"
-                VerticalOptions="Center" />
-
             <CollectionView
                 Grid.Row="2"
                 Grid.ColumnSpan="3"
-                Margin="0,10,0,10"
                 ItemsSource="{Binding MeasurementsViewModel.Measurements}">
 
                 <CollectionView.EmptyView>
-                    <StackLayout Padding="10">
+                    <StackLayout>
                         <Label
                             FontSize="Body"
                             HorizontalOptions="Center"
@@ -201,10 +188,35 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Measurement">
                         <Frame>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding TimePoint, StringFormat='Time point: {0:MM/dd/yyyy HH:mm}'}" />
-                                <Label Text="{Binding Weight, StringFormat=' --- Mass: {0} kg'}" />
-                            </StackLayout>
+                            <Grid ColumnDefinitions="*,*,*">
+                                <Button
+                                    BackgroundColor="Green"
+                                    FontSize="Body"
+                                    HorizontalOptions="Start"
+                                    Text="Reference"
+                                    VerticalOptions="Center" />
+                                <StackLayout
+                                    Grid.Column="1"
+                                    HorizontalOptions="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="5"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="Body"
+                                        Text="{Binding Weight, StringFormat='{0} kg'}" />
+                                    <Label FontSize="Body" Text="{Binding TimePoint, StringFormat='on {0:dd/MMM/yyyy HH:mm}'}" />
+                                </StackLayout>
+                                <Button
+                                    Grid.Column="2"
+                                    BackgroundColor="DarkRed"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:UserProfileViewModel}}, Path=DeleteMeasurementCommand}"
+                                    CommandParameter="{Binding .}"
+                                    FontSize="Body"
+                                    HorizontalOptions="End"
+                                    Text="Delete"
+                                    VerticalOptions="Center" />
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
