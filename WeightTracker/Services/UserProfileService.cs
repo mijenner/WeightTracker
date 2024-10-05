@@ -9,6 +9,7 @@ namespace WeightTracker.Services
             Preferences.Set(nameof(userProfile.Name), userProfile.Name);
             Preferences.Set(nameof(userProfile.Height), userProfile.Height);
             Preferences.Set(nameof(userProfile.Weight), userProfile.Weight);
+            Preferences.Set(nameof(userProfile.WeightDate), userProfile.WeightDate);
             Preferences.Set(nameof(userProfile.RefWeight), userProfile.RefWeight);
             Preferences.Set(nameof(userProfile.RefDate), userProfile.RefDate);
             return; 
@@ -20,6 +21,7 @@ namespace WeightTracker.Services
             userProfile.Name = Preferences.Get(nameof(userProfile.Name), GetFallbackUserName());
             userProfile.Height = Preferences.Get(nameof(userProfile.Height), 0.0);
             userProfile.Weight = Preferences.Get(nameof(userProfile.Weight), 0.0);
+            userProfile.WeightDate = Preferences.Get(nameof(userProfile.WeightDate), DateTime.Now);
             userProfile.RefWeight = Preferences.Get(nameof(userProfile.RefWeight), 0.0);
             userProfile.RefDate = Preferences.Get(nameof(userProfile.RefDate), DateTime.Now);
             return userProfile;

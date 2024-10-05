@@ -34,31 +34,30 @@
         <StackLayout
             Grid.Row="2"
             Grid.ColumnSpan="4"
-            Padding="8"
             Orientation="Vertical"
-            Spacing="10">
+            Spacing="7">
 
             <Label FontSize="Subtitle" Text="User Profile" />
-            <StackLayout Orientation="Horizontal" Spacing="10">
+            <StackLayout Orientation="Horizontal" Spacing="7">
                 <Label
                     FontSize="Body"
                     Text="Username:"
                     VerticalTextAlignment="Center" />
                 <Entry
-                    Text="{Binding TempUserProfile.Name, Mode=TwoWay}"
+                    Text="{Binding Name, Mode=TwoWay}"
                     VerticalTextAlignment="Center"
                     WidthRequest="150" />
 
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" Spacing="10">
+            <StackLayout Orientation="Horizontal" Spacing="7">
                 <Label
                     FontSize="Body"
                     Text="Height:"
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Text="{Binding TempUserProfile.Height, Mode=TwoWay}"
+                    Text="{Binding Height, Mode=TwoWay}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
@@ -77,14 +76,14 @@
             <StackLayout
                 Margin="20,0,0,0"
                 Orientation="Horizontal"
-                Spacing="10">
+                Spacing="7">
                 <Label
                     FontSize="Body"
                     Text="Weight:"
                     VerticalTextAlignment="Center" />
                 <Entry
                     FontSize="Body"
-                    Text="{Binding TempUserProfile.RefWeight, Mode=TwoWay}"
+                    Text="{Binding RefWeight, Mode=TwoWay}"
                     VerticalTextAlignment="Center" />
                 <Label
                     FontSize="Body"
@@ -93,32 +92,35 @@
 
             </StackLayout>
 
-            <Label Margin="20,0,0,0" Text="Date measured:" />
-
-            <Grid
-                ColumnDefinitions="auto,auto,auto"
-                ColumnSpacing="7"
-                RowDefinitions="auto">
+            <StackLayout
+                Margin="20,0,0,0"
+                Orientation="Horizontal"
+                Spacing="7">
+                <Label Text="Date:  " VerticalTextAlignment="Center" />
                 <DatePicker
-                    Grid.Column="1"
                     Date="{Binding SelectedDate, Mode=TwoWay}"
                     FontSize="Body"
                     VerticalOptions="Fill" />
+            </StackLayout>
+
+            <StackLayout
+                Margin="20,0,0,0"
+                Orientation="Horizontal"
+                Spacing="7">
+                <Label Text="On:  " VerticalTextAlignment="Center" />
                 <TimePicker
                     Grid.Column="2"
                     Margin="0,12,0,0"
                     FontSize="Body"
                     Format="HH:mm"
                     Time="{Binding SelectedTime, Mode=TwoWay}"
-                    VerticalOptions="FillAndExpand" />
-            </Grid>
+                    VerticalOptions="Center" />
 
-            <Grid
-                Margin="20,0,0,0"
-                ColumnDefinitions="*,*"
-                RowDefinitions="auto">
+            </StackLayout>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="auto">
                 <Button
-                    Command="{Binding SaveUserProfileCommand}"
+                    Command="{Binding SaveTempUserProfileCommand}"
                     FontSize="Body"
                     HorizontalOptions="Start"
                     Text="Save" />

@@ -12,42 +12,26 @@ namespace WeightTracker.ViewModels
         private IStorageService storageService;
         public ObservableCollection<Measurement> Measurements { get; set; } = new();
 
-        [ObservableProperty]
-        private double newWeight;
-
-        [ObservableProperty]
-        private DateTime selectedDate;
-
-        [ObservableProperty]
-        private TimeSpan selectedTime;
-
         // constructor 
         public MeasurementsViewModel(IStorageService storageService)
         {
             Title = "Weight Tracker";
             this.storageService = storageService;
-            SetDateAndTime();
         }
 
-        private void SetDateAndTime() {
-            SelectedDate = DateTime.Today;
-            SelectedTime = DateTime.Now.TimeOfDay;
-        }
 
-        [RelayCommand]
-        async Task AddNewMeasurementAsync()
+        public async Task AddNewMeasurementAsync(double newWeight, DateTime timePoint)
         {
-            if (NewWeight == 0) return; 
+            if (newWeight == 0) return; 
             try
             {
-                var timePoint = SelectedDate.Date + SelectedTime;
-                var meas = new Measurement(NewWeight, timePoint); 
+                var meas = new Measurement(newWeight, timePoint); 
                 await storageService.AddMeasurementAsync(meas);
                 await FetchMeasurementsAsync(); 
             }
             catch (Exception ex)
             {
-                throw;
+                Debug.WriteLine(ex);
             }
             finally
             {

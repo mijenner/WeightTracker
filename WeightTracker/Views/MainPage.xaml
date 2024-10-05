@@ -40,8 +40,8 @@
                 HorizontalOptions="Start"
                 Orientation="Vertical"
                 Spacing="10">
-                <Label FontSize="Body" Text="{Binding UserProfile.Weight, StringFormat='Weight loss {0:F1} kg'}" />
-                <Label FontSize="Body" Text="{Binding WeightLossRate, StringFormat='Lost {0:F2} kg / week'}" />
+                <Label FontSize="Body" Text="{Binding Weight, StringFormat='Weight {0:F1} kg'}" />
+                <Label FontSize="Body" Text="{Binding Bmi, StringFormat='BMI {0:F1}'}" />
             </StackLayout>
             <StackLayout
                 Grid.Row="2"
@@ -50,14 +50,25 @@
                 HorizontalOptions="Start"
                 Orientation="Vertical"
                 Spacing="10">
-                <Label FontSize="Body" Text="{Binding WeightLossPercent, StringFormat='Weight loss {0:P0}'}" />
-                <Label FontSize="Body" Text="{Binding Bmi, StringFormat='BMI {0:F1}'}" />
+                <Label FontSize="Body" Text="{Binding WeightLoss, StringFormat='Lost {0:F1} kg'}" />
+                <Label FontSize="Body" Text="{Binding WeightLossPercent, StringFormat='Weight loss {0:P1}'}" />
+            </StackLayout>
+            <StackLayout
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="0,10,0,10"
+                HorizontalOptions="Start"
+                Orientation="Vertical"
+                Spacing="10">
+                <Label FontSize="Body" Text="{Binding RefDate, StringFormat='since {0:dd/MMM/yyyy}'}" />
+                <Label FontSize="Body" Text="{Binding WeightLossRate, StringFormat='Rate {0:F1} kg / week'}" />
             </StackLayout>
 
             <Button
                 Grid.Row="2"
                 Grid.Column="2"
                 Margin="0,10,0,10"
+                Command="{Binding GotoEditProfilePageCommand}"
                 FontSize="Body"
                 HorizontalOptions="End"
                 Text="Edit profile" />
@@ -85,13 +96,14 @@
 
             <Button
                 Grid.Row="1"
+                Grid.RowSpan="2"
                 Grid.Column="2"
                 Margin="0,10,0,10"
-                Command="{Binding MeasurementsViewModel.AddNewMeasurementCommand}"
+                Command="{Binding AddNewMeasurementCommand}"
                 FontSize="Body"
                 HorizontalOptions="End"
                 Text="Add"
-                VerticalOptions="End" />
+                VerticalOptions="Start" />
 
             <StackLayout
                 Grid.Row="2"
@@ -107,13 +119,18 @@
                     <Entry
                         FontSize="Body"
                         Keyboard="Numeric"
-                        Text="{Binding MeasurementsViewModel.NewWeight}"
+                        Text="{Binding NewWeight}"
                         VerticalTextAlignment="Center"
                         WidthRequest="50" />
                     <Label
                         FontSize="Body"
                         Text="kg"
                         VerticalTextAlignment="Center" />
+                    <Label
+                        FontSize="Body"
+                        Text="   Date:"
+                        VerticalTextAlignment="Center" />
+                    <DatePicker Date="{Binding SelectedDate, Mode=TwoWay}" VerticalOptions="Fill" />
 
                 </StackLayout>
                 <Grid
@@ -122,17 +139,13 @@
                     RowDefinitions="auto">
                     <Label
                         FontSize="Body"
-                        Text="Date and time: "
+                        Text="Time:"
                         VerticalTextAlignment="Center" />
-                    <DatePicker
-                        Grid.Column="1"
-                        Date="{Binding MeasurementsViewModel.SelectedDate, Mode=TwoWay}"
-                        VerticalOptions="Fill" />
                     <TimePicker
                         Grid.Column="2"
                         Margin="0,10,0,0"
                         Format="HH:mm"
-                        Time="{Binding MeasurementsViewModel.SelectedTime, Mode=TwoWay}"
+                        Time="{Binding SelectedTime, Mode=TwoWay}"
                         VerticalOptions="FillAndExpand" />
                 </Grid>
 

@@ -10,11 +10,19 @@ namespace WeightTracker.ViewModels
         private IUserProfileService userProfileService;
 
         [ObservableProperty]
-        private UserProfile userProfile;
-
+        private string name;
         [ObservableProperty]
-        private UserProfile tempUserProfile;
+        private double height;
+        [ObservableProperty]
+        private double weight;
+        [ObservableProperty]
+        private DateTime weightDate;
+        [ObservableProperty]
+        private double refWeight;
+        [ObservableProperty]
+        private DateTime refDate;
 
+        // Derived data: 
         [ObservableProperty]
         private double weightLoss = 0;
         [ObservableProperty]
@@ -24,101 +32,134 @@ namespace WeightTracker.ViewModels
         [ObservableProperty]
         private double bmi = 0;
 
+        // New input: 
+        [ObservableProperty]
+        private double newWeight;
         [ObservableProperty]
         private DateTime selectedDate;
-
         [ObservableProperty]
         private TimeSpan selectedTime;
 
+        // UI trick: 
         [ObservableProperty]
-        private bool isSavedMessageVisible = false; 
+        private bool isSavedMessageVisible = false;
 
         [ObservableProperty]
         private MeasurementsViewModel measurementsViewModel;
 
+        private UserProfile tempUserProfile;
+
         public UserProfileViewModel(IUserProfileService userProfileService, MeasurementsViewModel measurementsViewModel)
         {
-            this.userProfileService = userProfileService;
-            UserProfile = this.userProfileService.GetUserProfile();
-            LoadTempProfile();
             MeasurementsViewModel = measurementsViewModel;
+            this.userProfileService = userProfileService;
         }
 
-        public void LoadTempProfile()
+        public void LoadUserProfile()  // for main page 
         {
-            TempUserProfile = new UserProfile
-            {
-                Name = UserProfile.Name,
-                Height = UserProfile.Height,
-                Weight = UserProfile.Weight,
-                WeightDate = UserProfile.WeightDate,
-                RefWeight = UserProfile.RefWeight,
-                RefDate = UserProfile.RefDate,
-            };
+            tempUserProfile = this.userProfileService.GetUserProfile();
+            CopyToObservableProperties();
+            CalculateDerivedData();
 
-            SelectedDate = TempUserProfile.RefDate.Date;
-            SelectedTime = TempUserProfile.RefDate.TimeOfDay;
+            SelectedDate = DateTime.Today;
+            SelectedTime = DateTime.Now.TimeOfDay;
+            NewWeight = tempUserProfile.Weight;
         }
 
-        partial void OnSelectedDateChanged(DateTime value)
+        public void LoadTempProfile() // for edit profile page 
         {
-            UserProfile.RefDate = value.Add(SelectedTime);
+            tempUserProfile = this.userProfileService.GetUserProfile();
+            CopyToObservableProperties();
+            CalculateDerivedData();
+
+            SelectedDate = tempUserProfile.RefDate.Date;
+            SelectedTime = tempUserProfile.RefDate.TimeOfDay;
         }
 
-        partial void OnSelectedTimeChanged(TimeSpan value)
+        public void CopyToObservableProperties()
         {
-            UserProfile.RefDate = SelectedDate.Add(value);
+            if (tempUserProfile is null) return;
+            Name = tempUserProfile.Name;
+            Height = tempUserProfile.Height;
+            Weight = tempUserProfile.Weight;
+            WeightDate = tempUserProfile.WeightDate;
+            RefWeight = tempUserProfile.RefWeight;
+            RefDate = tempUserProfile.RefDate;
         }
 
-        public void UpdateData()
+        public void CalculateDerivedData()
         {
-            SelectedDate = UserProfile.RefDate.Date;
-            SelectedTime = UserProfile.RefDate.TimeOfDay;
+            WeightLoss = RefWeight - Weight;
 
-            if (MeasurementsViewModel is null) return; 
+            WeightLossPercent = RefWeight > 0 ? WeightLoss / RefWeight : 0;
+
+            var weeksBetween = (WeightDate - RefDate).Days / 7.0;
+            WeightLossRate = Math.Abs(weeksBetween) > 0 ? WeightLoss / weeksBetween : 0;
+
+            Bmi = Height > 0 ? Weight / Math.Pow(Height / 100.0, 2) : 0;
+        }
+
+        public void UpdateUsersWeight()
+        {
+            if (MeasurementsViewModel is null) return;
+            if (MeasurementsViewModel.Measurements.Count == 0) return; 
 
             var latest = MeasurementsViewModel.GetLatestMeasurement();
             if (latest.Weight > 0)
             {
-                UserProfile.Weight = latest.Weight;
-                UserProfile.WeightDate = latest.TimePoint;
+                Weight = latest.Weight;
+                WeightDate = latest.TimePoint;
+                tempUserProfile.Weight = Weight;
+                tempUserProfile.WeightDate = WeightDate; 
             }
-            WeightLoss = UserProfile.Weight - UserProfile.RefWeight;
-
-            WeightLossPercent = UserProfile.RefWeight > 0 ? WeightLoss / UserProfile.RefWeight : 0;
-
-            var daysBetween = (UserProfile.WeightDate - UserProfile.RefDate).Days;
-            WeightLossRate = daysBetween > 0 ? WeightLoss / (daysBetween / 7) : 0;
-
-            if (UserProfile.Height > 0)
-            {
-                Bmi = UserProfile.Height > 0 ? UserProfile.Weight / Math.Pow(UserProfile.Height, 2) : 0;
-            }
-        }
-
-        partial void OnUserProfileChanged(UserProfile value)
-        {
-            UpdateData();
         }
 
         [RelayCommand]
-        public async Task SaveUserProfile()
+        public async Task SaveTempUserProfile() // for edit page 
         {
-            if (UserProfile == null) return;
-            if (UserProfile.Weight == 0 || UserProfile.Height == 0) return;
+            tempUserProfile.Name = Name;
+            tempUserProfile.Height = Height;
+            UpdateUsersWeight(); 
+            tempUserProfile.RefWeight = RefWeight;
+            tempUserProfile.RefDate = SelectedDate.Add(SelectedTime);
 
-            UserProfile.Name = TempUserProfile.Name;
-            UserProfile.Weight = TempUserProfile.Weight;
-            UserProfile.Height = TempUserProfile.Height;
-            UserProfile.WeightDate = TempUserProfile.WeightDate;
-            UserProfile.RefWeight = TempUserProfile.RefWeight;
-            UserProfile.RefDate = TempUserProfile.RefDate;
+            userProfileService.SaveUserProfile(tempUserProfile);
 
-            userProfileService.SaveUserProfile(UserProfile);
-
-            isSavedMessageVisible = true;
+            IsSavedMessageVisible = true;
             await Task.Delay(2000);
             IsSavedMessageVisible = false;
+        }
+
+        [RelayCommand]
+        public async Task SaveUserProfile()  // for main page 
+        {
+            UpdateUsersWeight();
+            userProfileService.SaveUserProfile(tempUserProfile);
+
+            IsSavedMessageVisible = true;
+            await Task.Delay(2000);
+            IsSavedMessageVisible = false;
+        }
+
+        [RelayCommand]
+        public async Task AddNewMeasurement() // for main page 
+        {
+            if (NewWeight <= 0) return;
+            await MeasurementsViewModel.AddNewMeasurementAsync(NewWeight, SelectedDate.Add(SelectedTime));
+
+            var newMeasurement = MeasurementsViewModel.GetLatestMeasurement();
+            if (newMeasurement.Weight == 0) return;
+
+            UpdateUsersWeight();
+            await SaveUserProfile();
+        }
+
+
+
+        [RelayCommand]
+        public async Task GotoEditProfilePageAsync()
+        {
+            await Shell.Current.GoToAsync("editprofile");
         }
     }
 }
