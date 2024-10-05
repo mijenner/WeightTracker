@@ -41,7 +41,7 @@ namespace WeightTracker.ViewModels
         }
 
         [RelayCommand]
-        async Task FetchMeasurementsAsync()
+        public async Task FetchMeasurementsAsync()
         {
             try
             {

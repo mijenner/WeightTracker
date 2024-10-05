@@ -191,6 +191,8 @@
                             <Grid ColumnDefinitions="*,*,*">
                                 <Button
                                     BackgroundColor="Green"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:UserProfileViewModel}}, Path=MakeReferenceCommand}"
+                                    CommandParameter="{Binding .}"
                                     FontSize="Body"
                                     HorizontalOptions="Start"
                                     Text="Reference"

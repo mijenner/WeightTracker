@@ -19,7 +19,8 @@ namespace WeightTracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<IStorageService, InMemoryStorage>();
+            // builder.Services.AddSingleton<IStorageService, InMemoryStorage>();
+            builder.Services.AddSingleton<IStorageService, JSONFileStorage>();
             builder.Services.AddSingleton<IUserProfileService, UserProfileService>();
 
             builder.Services.AddSingleton<MeasurementsViewModel>();

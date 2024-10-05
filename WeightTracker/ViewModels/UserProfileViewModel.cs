@@ -55,8 +55,10 @@ namespace WeightTracker.ViewModels
             this.userProfileService = userProfileService;
         }
 
-        public void LoadUserProfile()  // for main page 
+        public async Task LoadUserProfile()  // for main page 
         {
+            await MeasurementsViewModel.FetchMeasurementsAsync();
+
             tempUserProfile = this.userProfileService.GetUserProfile();
             CopyToObservableProperties();
             CalculateDerivedData();
@@ -64,6 +66,7 @@ namespace WeightTracker.ViewModels
             SelectedDate = DateTime.Today;
             SelectedTime = DateTime.Now.TimeOfDay;
             NewWeight = tempUserProfile.Weight;
+
         }
 
         public void LoadTempProfile() // for edit profile page 
@@ -85,6 +88,17 @@ namespace WeightTracker.ViewModels
             WeightDate = tempUserProfile.WeightDate;
             RefWeight = tempUserProfile.RefWeight;
             RefDate = tempUserProfile.RefDate;
+        }
+
+        public void CopyToTempUserProfile()
+        {
+            if (tempUserProfile is null) return;
+            tempUserProfile.Name = Name; 
+            tempUserProfile.Height = Height;
+            tempUserProfile.Weight = Weight;
+            tempUserProfile.WeightDate = WeightDate;
+            tempUserProfile.RefWeight = RefWeight;
+            tempUserProfile.RefDate = SelectedDate.Add(SelectedTime); 
         }
 
         public void CalculateDerivedData()
@@ -124,11 +138,12 @@ namespace WeightTracker.ViewModels
         [RelayCommand]
         public async Task SaveTempUserProfile() // for edit page 
         {
-            tempUserProfile.Name = Name;
-            tempUserProfile.Height = Height;
-            UpdateUsersWeight(); 
-            tempUserProfile.RefWeight = RefWeight;
-            tempUserProfile.RefDate = SelectedDate.Add(SelectedTime);
+            CopyToTempUserProfile(); 
+            //tempUserProfile.Name = Name;
+            //tempUserProfile.Height = Height;
+            //UpdateUsersWeight(); 
+            //tempUserProfile.RefWeight = RefWeight;
+            //tempUserProfile.RefDate = SelectedDate.Add(SelectedTime);
 
             userProfileService.SaveUserProfile(tempUserProfile);
 
@@ -170,6 +185,20 @@ namespace WeightTracker.ViewModels
             UpdateUsersWeight();
             CalculateDerivedData();
             await SaveUserProfileAsync();
+        }
+
+        [RelayCommand]
+        public async Task MakeReferenceAsync(Measurement measurement)
+        {
+            if (measurement is null) return;
+            if (measurement.Weight == 0) return;
+
+            RefWeight = measurement.Weight;
+            RefDate = measurement.TimePoint;
+            CalculateDerivedData();
+            CopyToTempUserProfile(); 
+            await SaveUserProfileAsync();
+
         }
 
         [RelayCommand]
