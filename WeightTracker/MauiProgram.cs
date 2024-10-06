@@ -19,13 +19,13 @@ namespace WeightTracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Application specific services and view-models - singleton (en instans) 
             // builder.Services.AddSingleton<IStorageService, InMemoryStorage>();
             builder.Services.AddSingleton<IStorageService, JSONFileStorage>();
             builder.Services.AddSingleton<IUserProfileService, UserProfileService>();
-
             builder.Services.AddSingleton<MeasurementsViewModel>();
             builder.Services.AddSingleton<UserProfileViewModel>();
-
+            // App specific pages
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddTransient<EditProfilePage>(); 
 

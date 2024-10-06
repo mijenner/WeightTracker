@@ -8,7 +8,7 @@ namespace WeightTracker
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("editprofile", typeof(EditProfilePage));
+            Routing.RegisterRoute("EditProfile", typeof(EditProfilePage));
         }
     }
 }

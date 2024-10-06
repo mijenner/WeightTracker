@@ -204,7 +204,7 @@ namespace WeightTracker.ViewModels
         [RelayCommand]
         public async Task GotoEditProfilePageAsync()
         {
-            await Shell.Current.GoToAsync("editprofile");
+            await Shell.Current.GoToAsync("EditProfile");
         }
 
         [RelayCommand]
