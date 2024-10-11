@@ -7,7 +7,7 @@ namespace WeightTracker.ViewModels
 {
     public partial class UserProfileViewModel : ObservableObject
     {
-        private IUserProfileService userProfileService;
+        private readonly IUserProfileService userProfileService;
 
         [ObservableProperty]
         private string name;
